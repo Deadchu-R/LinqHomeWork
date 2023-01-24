@@ -1,9 +1,10 @@
 ﻿
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
-
-
+using System.Security.Cryptography.X509Certificates;
 
 class Program
 {
@@ -15,8 +16,8 @@ class Program
        // SentanceAverage sentanceAverage = new SentanceAverage();
        // sentanceAverage.GiveMeAverage();
 
-        PrintAllStringsWithThatChar printStringWithChar = new PrintAllStringsWithThatChar();
-        printStringWithChar.PrintWordsThatStartWithThatLetters();
+        //PrintAllStringsWithThatChar printStringWithChar = new PrintAllStringsWithThatChar();
+        //printStringWithChar.PrintWordsThatStartWithThatLetters();
 
         StudentAndGrade studentsAndGrades = new StudentAndGrade();
 
@@ -33,9 +34,17 @@ class Program
             new Grade { ID = 0, grade = 1 }, // annoymous object,
             new Grade { ID = 206697450, grade = 110 } // annoymous object
         };
-        studentsAndGrades.CombineStudnetAndGradeList(students, grades);
+        //studentsAndGrades.CombineStudnetAndGradeList(students, grades);
 
-       
+        students.PrintAll();
+
+        List<Enemy> eList = new();
+        for (int i = 0; i < 150; i++)
+        {
+            eList.Add(new Enemy() { Damage = Random.Shared.Next(1, 150) });
+        }
+     
+          Console.WriteLine(eList.GetHighest(e => e.Damage));
 
     }
 
@@ -43,8 +52,8 @@ class Program
 
 
 
-   
-       
+
+
 
 }
 
@@ -121,7 +130,8 @@ public class StudentAndGrade
     {
         var studentGrades = students.Join(grades, (s) => s.ID, (g) => g.ID,
             (s, g) => new { Name = s.FirstName , grade = g.grade });
-
+        String lol = "lang";
+        lol.Reverse();
         foreach (var item in studentGrades)
         {
             Console.WriteLine(item);
@@ -140,4 +150,45 @@ public class Grade
 {
     public int ID;
     public int grade;
+}
+
+public static class IenumarablwExtensionsL
+{
+
+    public static IEnumerable PrintAll(this IEnumerable e)
+    {  
+        foreach (var item in e)
+        {
+            Console.WriteLine(item);
+            
+        }
+        return e;
+    }
+
+    //    Write an extension method for IEnumerables<T> that returns T object according to
+    //an integer value inside T.The method should accept a Func<T, int> as one of its
+    //parameters. Example blow.
+    public static IEnumerable GetHighest<T>(this IEnumerable IEnum, Func<T,int> func)
+    {
+     
+     T GetObject<T>( int num)
+    {
+         var v =    IEnum.Cast<T>();
+            return v;
+       
+    }
+        func = GetObject;
+        var f = func;
+
+        return IEnum;
+    }
+
+}
+public class Enemy
+{
+    public int Damage = 10;
+    public override string ToString()
+    {
+        return Damage.ToString();
+    }
 }
