@@ -5,77 +5,73 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public static class IEnumarableExtensions // there are two related Classes here: IEnumarableExtensions And Enemy
+ static class IEnumarableExtensions // there are two related Classes here: IEnumarableExtensions And Enemy
 {
 
-    public static IEnumerable PrintAll(this IEnumerable e)
+    public static void PrintAll(this IEnumerable enumrable)
     {
-        foreach (var item in e)
+        foreach (var item in enumrable)
         {
             Console.WriteLine(item);
-
+          
         }
-        return e;
+       
     }
 
 
-    public static IEnumerable<T> GetHighestWithIComparable<T>(this IEnumerable<T> iEnum, Func<T, int> func) where T : IComparable<T>
+
+    public static T GetHighestWithIComparable<T>(this IEnumerable<T> collection) where T : IComparable
     {
-        List<int> dList = new List<int>();
-        foreach (T item in iEnum)
+        
+        T classWithHighestValue = collection.ToList()[0];
+
+        foreach (T item in collection)
         {
-            dList.Add(func.Invoke(item));
+         
+            if (classWithHighestValue.CompareTo(item) < 0)
+            {
+                
+                classWithHighestValue = item;
+            }
         }
 
-
-        var orderedList = dList.OrderBy(d => d).Reverse().ToList();
-
-        int largest = orderedList[0];
-        foreach (int item in orderedList)
-        {
-            Console.Write(item + ",");
-        }
-
-
-        return iEnum.Where(x => func(x) == largest);
+        return classWithHighestValue;
 
     }
 
-    public static IEnumerable<T> GetHighest<T>(this IEnumerable<T> iEnum, Func<T, int> func)
+
+    public static T GetHighest<T>(this IEnumerable<T> collection, Func<T, int> func)
     {
+        int highestValue = 0;
+        T classWithHighestValue = default;
 
-
-
-        List<int> dList = new List<int>();
-        foreach (T item in iEnum)
+        foreach (T item in collection)
         {
-            dList.Add(func.Invoke(item));
+            if (highestValue < func.Invoke(item))
+            {
+                highestValue = func.Invoke(item);
+                classWithHighestValue = item;
+            }
         }
 
-        var orderedList = dList.OrderBy(d => d).Reverse().ToList();
-
-        int largest = orderedList[0];
-        foreach (int item in orderedList)
-        {
-            Console.Write(item + ",");
-        }
-
-
-        return iEnum.Where(x => func(x) == largest);
+        return classWithHighestValue;
 
     }
-
 
 }
 
-public class Enemy : IComparable<Enemy>
+public class Enemy : IComparable
 {
     public int Damage = 10;
 
 
-    public int CompareTo(Enemy? other)
+
+
+    public int CompareTo(object? obj)
     {
-        throw new NotImplementedException();
+        
+            return this.Damage - ((Enemy)obj).Damage;
+   
     }
 
     public override string ToString()

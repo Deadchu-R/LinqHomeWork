@@ -66,9 +66,10 @@ class Program
                     {
                         eList.Add(new Enemy() { Damage = Random.Shared.Next(1, 1500) });
                     }
-
-                    Console.WriteLine(eList.GetHighest<Enemy>(e => e.Damage).First());
-                    Console.WriteLine(eList.GetHighestWithIComparable<Enemy>(e => e.Damage).First());
+                    
+                  
+                    Console.WriteLine(eList.GetHighest(e => e.Damage));
+                    Console.WriteLine(eList.GetHighestWithIComparable());
                     Console.ReadLine();
                     Console.Clear();
                     break;
